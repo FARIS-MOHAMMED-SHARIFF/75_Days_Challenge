@@ -1,0 +1,98 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> s1 = new Stack<Integer>();
+        Stack<Integer> s2 = new Stack<Integer>();
+        
+        while(l1 != null) {
+            s1.push(l1.val);
+            l1 = l1.next;
+        };
+        while(l2 != null) {
+            s2.push(l2.val);
+            l2 = l2.next;
+        }
+        
+        int sum = 0;
+        int carry = 0;
+        ListNode head = null ;
+        while (!s1.empty() || !s2.empty() || carry != 0) {
+            sum = carry;
+            if (!s1.empty()) sum += s1.pop();
+            if (!s2.empty()) sum += s2.pop();
+            
+            ListNode newNode = new ListNode(sum % 10);
+            newNode.next = head;
+            head = newNode;
+                     
+            carry = sum / 10;
+        }
+        
+        return head;
+    }
+}
+
+// class Solution {
+//     public ListNode addTwoNumbers(ListNode list1, ListNode list2) {
+//         if(list1 == null || list2 ==  null)
+//             return list1 == null ? list1 : list2;
+        
+//         ListNode l1 = reverseList(list1);
+//         ListNode l2 = reverseList(list2);
+//         ListNode dummy = new ListNode();
+//         ListNode curr = dummy;
+//         int carry = 0;
+//         int sum = 0;
+        
+//         while(l1 != null || l2 != null || carry == 1)
+//         {
+//             int x = l1 != null ? l1.val : 0;            
+//             int y = l2 != null ? l2.val : 0;
+            
+//             sum = x + y + carry;
+            
+//             carry = sum / 10;
+            
+//             curr.next = new ListNode(sum % 10);
+            
+//             curr = curr.next;
+            
+//             if(l1 != null)
+//                 l1 = l1.next;
+            
+//             if(l2 != null)
+//                 l2 = l2.next;
+//         }
+        
+//         dummy.next = reverseList(dummy.next);
+//         return dummy.next;
+        
+        
+//     }
+//     public ListNode reverseList(ListNode head) {
+//         if(head == null || head.next == null)
+//             return head;
+        
+//         ListNode prev = null;
+//         ListNode curr = head;
+//         ListNode next = null;
+        
+//         while(curr != null)
+//         {
+//             next = curr.next;
+//             curr.next = prev;
+//             prev = curr;
+//             curr = next;
+//         }
+//         return prev;
+//     }
+// }
