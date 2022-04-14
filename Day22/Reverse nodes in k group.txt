@@ -1,0 +1,78 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    static ListNode temporaryHead = null;
+    static ListNode temporaryTail = null;
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head == null || head.next == null || k == 0)
+            return head;
+        int length = length(head);
+        ListNode originalHead = null;
+        ListNode originalTail = null;
+        ListNode curr = head;
+        ListNode forward = null;
+        
+        while(length >= k)
+        {
+            int tempLength = k;
+            while(tempLength > 0)
+            {
+                forward = curr.next;
+                curr.next = null;
+                addFirst(curr);
+                curr = forward;
+                --tempLength;
+            }
+            if(originalHead == null)
+            {
+                originalHead = temporaryHead;
+                originalTail = temporaryTail;
+            }
+            else
+            {
+                originalTail.next = temporaryHead;
+                originalTail = temporaryTail;
+            }
+            temporaryHead = null;
+            temporaryTail = null;              
+            length = length - k ;
+        }
+        //Either null or remaining nodes that are less than k
+        originalTail.next = curr;
+        
+        return originalHead;
+        
+    }
+    public int length(ListNode head)
+    {
+        ListNode curr = head;
+        int length = 0;
+        while(curr != null)
+        {
+            curr = curr.next;
+            length++;
+        }
+        return length;
+    }
+    public void addFirst(ListNode head)
+    {
+        if(temporaryHead == null)
+        {
+            temporaryHead = head;
+            temporaryTail = head;
+        }
+        else
+        {
+            head.next = temporaryHead;
+            temporaryHead = head;
+        }
+    }
+}
