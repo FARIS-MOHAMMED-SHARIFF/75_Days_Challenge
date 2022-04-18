@@ -1,0 +1,60 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int result[] = new int[n-k+1];
+        int index = 0;
+        Deque<Integer> queue = new ArrayDeque<>();
+        for(int i = 0; i < nums.length ; i++)
+        {
+            //Remove out of range k
+            if(!queue.isEmpty() && queue.peek() == i - k)
+            {
+                queue.poll();
+            }
+            // remove smaller elements in range k
+            while(!queue.isEmpty() && nums[queue.peekLast()] < nums[i])
+                queue.pollLast();
+            
+            queue.offer(i);
+            
+            if(i >= k - 1)
+                result[index++] = nums[queue.peek()];
+        }
+        return result;
+    }
+}
+// class Solution {
+//     public int[] maxSlidingWindow(int[] nums, int k) {
+//         int n = nums.length;
+//         int index = 0;
+//         int ans[] = new int[n-k+1];
+//         Deque<Integer> dq = new LinkedList<>();
+        
+//         for(int i=0;i<k;i++)
+//         {
+//             while(!dq.isEmpty() && nums[i] >= nums[dq.peekLast()])//to have max or second max element
+//             {
+//                 // System.out.println(dq.peekFirst());
+//                 dq.removeLast();
+//             }
+//             dq.addLast(i);
+//         }
+//         for(int i=k;i<n;i++)
+//         {
+//             ans[index++] = nums[dq.peekFirst()];
+            
+//             while(!dq.isEmpty() && dq.peek() <= i-k)
+//             {
+//                 dq.removeFirst();
+//             }
+//             while(!dq.isEmpty() && nums[i] > nums[dq.peekLast()])
+//             {
+//                 dq.removeLast();
+//             }
+//             dq.addLast(i);
+//         }
+//         ans[index] = nums[dq.peekFirst()];
+        
+//         return ans;
+//     }
+// }
